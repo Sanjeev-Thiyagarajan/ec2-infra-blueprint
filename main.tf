@@ -19,26 +19,27 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
-# data "terraform_remote_state" "core" {
-#   backend = "remote"
+data "terraform_remote_state" "core" {
+  backend = "remote"
 
-#   config = {
-#     organization = "sanjeevkt720"
-#     workspaces = {
-#       name = "infrastructure-iac"
-#     }
-#   }
-# }
-
-data "tfe_outputs" "core" {
-  organization = "sanjeevkt720"
-  workspace    = "infrastructure-iac"
+  config = {
+    organization = "sanjeevkt720"
+    workspaces = {
+      name = "infrastructure-iac"
+    }
+  }
 }
+
+# data "tfe_outputs" "core" {
+#   organization = "sanjeevkt720"
+#   workspace    = "infrastructure-iac"
+# }
 
 module "my_ec2" {
   source        = "app.terraform.io/sanjeevkt720/ec2-infra/aws"
   version       = "1.0.0"
   name          = "my-app-test"
   instance_type = "t2.micro"
-  subnet        = data.tfe_outputs.core.values.subnet3_id
+  #   subnet        = data.tfe_outputs.core.values.subnet3_id
+  subnet = data.terraform_remote_state.core.outputs.subnet3_id
 }
