@@ -6,7 +6,16 @@ terraform {
       name = "infrastructure-iac"
     }
   }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.16"
+    }
+  }
+
+  required_version = ">= 1.2.0"
 }
+
 module "my_ec2" {
   source  = "app.terraform.io/sanjeevkt720/ec2-infra/aws"
   version = "1.0.0"
