@@ -1,11 +1,11 @@
 terraform {
-  backend "remote" {
-    organization = "sanjeevkt720"
+  #   backend "remote" {
+  #     organization = "sanjeevkt720"
 
-    workspaces {
-      name = "infrastructure-iac"
-    }
-  }
+  #     workspaces {
+  #       name = "infrastructure-iac"
+  #     }
+  #   }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -19,13 +19,26 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+# data "terraform_remote_state" "core" {
+#   backend = "remote"
 
-module "my_ec2" {
-  source  = "app.terraform.io/sanjeevkt720/ec2-infra/aws"
-  version = "1.0.0"
-  name          = "my-app-test"
-  instance_type = "t2.micro"
-  subnet = aws_subnet.subnet3.id
+#   config = {
+#     organization = "sanjeevkt720"
+#     workspaces = {
+#       name = "infrastructure-iac"
+#     }
+#   }
+# }
+
+data "tfe_outputs" "core" {
+  organization = "sanjeevkt720"
+  workspace    = "infrastructure-iac"
 }
 
-
+module "my_ec2" {
+  source        = "app.terraform.io/sanjeevkt720/ec2-infra/aws"
+  version       = "1.0.0"
+  name          = "my-app-test"
+  instance_type = "t2.micro"
+  subnet        = data.tfe_outputs.core.values.subnet3_id
+}
