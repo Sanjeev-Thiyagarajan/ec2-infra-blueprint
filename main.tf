@@ -12,6 +12,7 @@ module "my_ec2" {
   version = "1.0.0"
   name          = "my-app-test"
   instance_type = "t2.micro"
+  subnet = "aws_subnet.subnet3.id"
 }
 
 
