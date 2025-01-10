@@ -7,10 +7,11 @@ terraform {
     }
   }
 }
-# https://github.com/Sanjeev-Thiyagarajan/infrastructure-iac/tree/main/modules/ec2-app
-
 module "my_ec2" {
-  source        = "https://github.com/Sanjeev-Thiyagarajan/infrastructure-iac/tree/main/modules/ec2-app"
+  source  = "app.terraform.io/sanjeevkt720/ec2-infra/aws"
+  version = "1.0.0"
   name          = "my-app-test"
   instance_type = "t2.micro"
 }
+
+
