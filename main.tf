@@ -16,6 +16,10 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
+provider "aws" {
+  region = "us-east-1"
+}
+
 module "my_ec2" {
   source  = "app.terraform.io/sanjeevkt720/ec2-infra/aws"
   version = "1.0.0"
